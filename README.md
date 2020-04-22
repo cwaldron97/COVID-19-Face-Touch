@@ -7,7 +7,8 @@ https://teachablemachine.withgoogle.com/models/OZ_M6rQ1D/
 
 ## Generated Code Snippets
 ### Javascript
-`<div>Teachable Machine Image Model</div>
+```
+<div>Teachable Machine Image Model</div>
 <button type="button" onclick="init()">Start</button>
 <div id="webcam-container"></div>
 <div id="label-container"></div>
@@ -65,10 +66,12 @@ https://teachablemachine.withgoogle.com/models/OZ_M6rQ1D/
             labelContainer.childNodes[i].innerHTML = classPrediction;
         }
     }
-</script>`
+</script>
+```
 
 ###p5.js
-`<div>Teachable Machine Image Model</div>
+```
+<div>Teachable Machine Image Model</div>
 <button type="button" onclick="init()">Start</button>
 <div id="webcam-container"></div>
 <div id="label-container"></div>
@@ -126,4 +129,5 @@ https://teachablemachine.withgoogle.com/models/OZ_M6rQ1D/
             labelContainer.childNodes[i].innerHTML = classPrediction;
         }
     }
-</script>`
+</script>
+```
