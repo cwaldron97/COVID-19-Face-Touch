@@ -69,7 +69,7 @@ https://teachablemachine.withgoogle.com/models/OZ_M6rQ1D/
 </script>
 ```
 
-###p5.js
+### p5.js
 ```
 <div>Teachable Machine Image Model</div>
 <button type="button" onclick="init()">Start</button>
