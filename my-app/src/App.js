@@ -6,27 +6,27 @@ var firebase = require( 'firebase/app' );
 require( 'firebase/database' );
 
 function App(props) {
+  let database;
   const URL = "https://teachablemachine.withgoogle.com/models/OZ_M6rQ1D/";
-
-  // var firebaseConfig = {
-  //   apiKey: "AIzaSyA_orcl2ieR8tLwJkr8pI7Hnt80wdSaQgU",
-  //   authDomain: "iot-face-project.firebaseapp.com",
-  //   databaseURL: "https://iot-face-project.firebaseio.com",
-  //   projectId: "iot-face-project",
-  //   storageBucket: "iot-face-project.appspot.com",
-  //   messagingSenderId: "139300741130",
-  //   appId: "1:139300741130:web:d97547c8c762e9f85abff3",
-  //   measurementId: "G-XLRDPJEPSX"
-  // };
-  //
-  // firebase.initializeApp(firebaseConfig);
-  //
-  // var database = firebase.database();
 
   let model, webcam, labelContainer, maxPredictions;
 
   // Load the image model and setup the webcam
   async function init() {
+      var firebaseConfig = {
+        apiKey: "AIzaSyA_orcl2ieR8tLwJkr8pI7Hnt80wdSaQgU",
+        authDomain: "iot-face-project.firebaseapp.com",
+        databaseURL: "https://iot-face-project.firebaseio.com",
+        projectId: "iot-face-project",
+        storageBucket: "iot-face-project.appspot.com",
+        messagingSenderId: "139300741130",
+        appId: "1:139300741130:web:d97547c8c762e9f85abff3",
+        measurementId: "G-XLRDPJEPSX"
+      };
+
+      firebase.initializeApp(firebaseConfig);
+
+      database = firebase.database();
       const modelURL = URL + "model.json";
       const metadataURL = URL + "metadata.json";
 
@@ -66,14 +66,14 @@ function App(props) {
 
       if (prediction[0].probability >= [prediction[1].probability]) {
         await props.changeTouching(false);
-        // database.ref('/').set({
-  			// 	faceTouch: false
-  			// });
+        database.ref('/').set({
+  				faceTouch: false
+  			});
       } else {
         await props.changeTouching(true);
-        // database.ref('/').set({
-  			// 	faceTouch: true
-  			// });
+        database.ref('/').set({
+  				faceTouch: true
+  			});
       }
 
       for (let i = 0; i < maxPredictions; i++) {
