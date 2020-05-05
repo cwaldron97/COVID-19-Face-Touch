@@ -5,22 +5,23 @@ import * as tmImage from '@teachablemachine/image';
 var firebase = require( 'firebase/app' );
 require( 'firebase/database' );
 
-function App() {
+function App(props) {
   const URL = "https://teachablemachine.withgoogle.com/models/OZ_M6rQ1D/";
 
-  var firebaseConfig = {
-   	  apiKey: "AIzaSyCegWkV7pueZRWQVrC1emc3TDkzOOywlrA",
-  	  authDomain: "iot-lab-3-ab9cc.firebaseapp.com",
-  	  databaseURL: "https://iot-lab-3-ab9cc.firebaseio.com",
-  	  projectId: "iot-lab-3-ab9cc",
-  	  storageBucket: "iot-lab-3-ab9cc.appspot.com",
-  	  messagingSenderId: "637909053221",
-  	  appId: "1:637909053221:web:136e4346f3b8c9fa6ff4cc"
-  };
-
-  firebase.initializeApp(firebaseConfig);
-
-  var database = firebase.database();
+  // var firebaseConfig = {
+  //   apiKey: "AIzaSyA_orcl2ieR8tLwJkr8pI7Hnt80wdSaQgU",
+  //   authDomain: "iot-face-project.firebaseapp.com",
+  //   databaseURL: "https://iot-face-project.firebaseio.com",
+  //   projectId: "iot-face-project",
+  //   storageBucket: "iot-face-project.appspot.com",
+  //   messagingSenderId: "139300741130",
+  //   appId: "1:139300741130:web:d97547c8c762e9f85abff3",
+  //   measurementId: "G-XLRDPJEPSX"
+  // };
+  //
+  // firebase.initializeApp(firebaseConfig);
+  //
+  // var database = firebase.database();
 
   let model, webcam, labelContainer, maxPredictions;
 
@@ -49,6 +50,7 @@ function App() {
       for (let i = 0; i < maxPredictions; i++) { // and class labels
           labelContainer.appendChild(document.createElement("div"));
       }
+      await props.start();
   }
 
   async function loop() {
@@ -63,27 +65,35 @@ function App() {
       const prediction = await model.predict(webcam.canvas);
 
       if (prediction[0].probability >= [prediction[1].probability]) {
-        database.ref('/').set({
-  				faceTouch: false
-  			});
+        await props.changeTouching(false);
+        // database.ref('/').set({
+  			// 	faceTouch: false
+  			// });
       } else {
-        database.ref('/').set({
-  				faceTouch: true
-  			});
+        await props.changeTouching(true);
+        // database.ref('/').set({
+  			// 	faceTouch: true
+  			// });
       }
 
       for (let i = 0; i < maxPredictions; i++) {
+          let name;
+          if (prediction[i].className === 'Class 3') {
+              name = 'Not Touching'
+          } else {
+              name = 'Touching Face'
+          }
           const classPrediction =
-              prediction[i].className + ": " + prediction[i].probability.toFixed(2);
+              name + ": " + prediction[i].probability.toFixed(2);
           labelContainer.childNodes[i].innerHTML = classPrediction;
       }
   }
-
+// <header className={started ? (touch ? "App-header-red" : "App-header-green") : "App-header"}>
   return (
     <div className="App">
-      <header className="App-header">
+      <header className={props.started ? (props.touch ? "App-header-red" : "App-header-green") : "App-header"}>
         <div>Teachable Machine Image Model</div>
-        <button type='button' onClick={init}>Start</button>
+        {!props.started && <button type='button' onClick={init}>Start</button>}
         <div id="webcam-container"></div>
         <div id="label-container"></div>
         <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.3.1/dist/tf.min.js"></script>
