@@ -96,6 +96,7 @@ function App(props) {
         {!props.started && <button type='button' onClick={init}>Start</button>}
         <div id="webcam-container"></div>
         <div id="label-container"></div>
+        {props.started && <div>Total Face Touches: {props.count}</div>}
         <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.3.1/dist/tf.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@0.8/dist/teachablemachine-image.min.js"></script>
       </header>
