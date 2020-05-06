@@ -14,12 +14,16 @@ async function startNow() {
   );
 }
 
-async function changeTouching(touch) {
+async function changeTouching(touch, database) {
   if (touch && canIncrement) {
     count += 1;
     canIncrement = false;
     setTimeout(() => {canIncrement = true;}, 5000);
   }
+  database.ref('/').update({
+    faceTouch: touch,
+    count: count
+  });
   ReactDOM.render(
       <App started={true} touch={touch} start={startNow} changeTouching={changeTouching} count={count}/>,
     document.getElementById('root')
