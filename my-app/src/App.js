@@ -13,16 +13,15 @@ function App(props) {
 
   // Load the image model and setup the webcam
   async function init() {
-      var firebaseConfig = {
-        apiKey: "AIzaSyA_orcl2ieR8tLwJkr8pI7Hnt80wdSaQgU",
-        authDomain: "iot-face-project.firebaseapp.com",
-        databaseURL: "https://iot-face-project.firebaseio.com",
-        projectId: "iot-face-project",
-        storageBucket: "iot-face-project.appspot.com",
-        messagingSenderId: "139300741130",
-        appId: "1:139300741130:web:d97547c8c762e9f85abff3",
-        measurementId: "G-XLRDPJEPSX"
-      };
+      const firebaseConfig = {
+        apiKey: "AIzaSyCegWkV7pueZRWQVrC1emc3TDkzOOywlrA",
+        authDomain: "iot-lab-3-ab9cc.firebaseapp.com",
+        databaseURL: "https://iot-lab-3-ab9cc.firebaseio.com",
+        projectId: "iot-lab-3-ab9cc",
+        storageBucket: "iot-lab-3-ab9cc.appspot.com",
+        messagingSenderId: "637909053221",
+        appId: "1:637909053221:web:136e4346f3b8c9fa6ff4cc"
+      }
 
       firebase.initializeApp(firebaseConfig);
 
@@ -65,15 +64,9 @@ function App(props) {
       const prediction = await model.predict(webcam.canvas);
 
       if (prediction[0].probability >= [prediction[1].probability]) {
-        await props.changeTouching(false);
-        database.ref('/').set({
-  				faceTouch: false
-  			});
+        await props.changeTouching(false, database);
       } else {
-        await props.changeTouching(true);
-        database.ref('/').set({
-  				faceTouch: true
-  			});
+        await props.changeTouching(true, database);
       }
 
       for (let i = 0; i < maxPredictions; i++) {
@@ -96,6 +89,7 @@ function App(props) {
         {!props.started && <button type='button' onClick={init}>Start</button>}
         <div id="webcam-container"></div>
         <div id="label-container"></div>
+        {props.started && <div>Total Face Touches: {props.count}</div>}
         <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.3.1/dist/tf.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@0.8/dist/teachablemachine-image.min.js"></script>
       </header>
